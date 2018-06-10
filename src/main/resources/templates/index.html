@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>SQL Demo</title>
+
+    <link href="js/jgrowl/jquery.jgrowl.min.css" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div id="employeesModel">
+    <h3>Employees Table</h3>
+    <form>
+        <input id="searchInput" type="text" placeholder="Enter name for search" />
+        <button type="button" data-bind="click: function(){$root.searchEmployee();}">Search</button>
+    </form>
+    <table class="display">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Active</th>
+            <th>Department</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: employees">
+        <tr>
+            <td data-bind="text: id" align="center"></td>
+            <td data-bind="text: name" align="center"></td>
+            <td data-bind="text: active" align="center"></td>
+            <td data-bind="text: department.name" align="center"></td>
+            <td align="center"><a href="#" data-bind="click: $parent.editEmployee">Edit</a></td>
+            <td align="center"><a href="#" data-bind="click: $parent.removeEmployee">Remove</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="#" id="previousPage" data-bind="click: $root.previousPage" hidden="hidden"> <-- </a>
+    . . . . . . .
+    <a href="#" id="nextPage" data-bind="click: $root.nextPage"> --> </a>
+</div>
+
+<br/><br/>
+
+<div id="updateBlock" hidden="hidden">
+    <h3>Update Employee</h3>
+    <form id="editedEmployeeModel">
+        <div>
+            <label>ID</label>
+            <input id="employeeID" type="text" data-bind="textInput: id" disabled="disabled"/>
+        </div>
+        <br/>
+        <div>
+            <label>Name</label>
+            <input id="employeeName" type="text" data-bind="textInput: name" />
+        </div>
+        <br/>
+        <div>
+            <label>Active</label>
+            <input id="employeeActive" type="checkbox" data-bind="checked: active"/>
+        </div>
+        <br/>
+        <div>
+            <label>Department</label>
+            <select id="employeeDepartment"
+                    data-bind="options: availableDepartments, optionsText: function(item) { return item.name },
+                    optionsValue: function(item) { return item.id }, value: department.id"></select>
+        </div>
+        <br/>
+        <button type="button" data-bind="click: function(){$root.updateEmployee();}">Update</button>
+        <button type="button" data-bind="click: function(){$root.cancel();}">Cancel</button>
+    </form>
+</div>
+
+<script type="text/javascript" src="js/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/knockout/knockout-3.4.2.js"></script>
+<script type="text/javascript" src="js/knockout/knockout.mapping.js"></script>
+<script type="text/javascript" src="js/jgrowl/jquery.jgrowl.min.js"></script>
+
+<script type="text/javascript" src="js/main.js"></script>
+
+</body>
+</html>
