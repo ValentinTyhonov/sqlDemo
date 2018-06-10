@@ -3,20 +3,28 @@ jQuery(document).ready(function() {
 var PAGE_SIZE = 3;
 var PAGE_NUM = 0;
 var PAGE_MAX;
+var VIEW_MODE = "ALL";
 
 var employeesModel = {
 	employees: ko.observableArray(),
 
 	searchEmployee: function() {
-	  loadData("/employee/search?page=" + PAGE_NUM + "&size=" + PAGE_SIZE + "&name=" + $("#searchInput").val());
+	  VIEW_MODE = "SEARCH";
+	  loadData();
 	},
+
+	loadAllEmployees: function() {
+	  VIEW_MODE = "ALL";
+	  loadData();
+	  $("#searchInput").val("");
+  },
 
 	removeEmployee: function() {
 	  employeesModel.employees.remove(this);
 	  employeeToRemove = JSON.parse(ko.toJSON(this));
 	  performAJAX("/employee?id=" + employeeToRemove.id, "DELETE", "", function(data) {
 	    $.jGrowl(data);
-	    loadData("/employee?page=" + PAGE_NUM + "&size=" + PAGE_SIZE);
+	    loadData();
     });
   },
 
@@ -36,7 +44,7 @@ var employeesModel = {
     if(PAGE_NUM == PAGE_MAX) {
       $("#nextPage").hide();
     }
-    loadData("/employee?page=" + PAGE_NUM + "&size=" + PAGE_SIZE);
+    loadData();
   },
 
   previousPage: function() {
@@ -45,7 +53,7 @@ var employeesModel = {
     if(PAGE_NUM == 0) {
       $("#previousPage").hide();
     }
-    loadData("/employee?page=" + PAGE_NUM + "&size=" + PAGE_SIZE);
+    loadData();
   }
 
 }
@@ -86,7 +94,7 @@ function editedEmployeeModel(employeeData, departmentsData) {
     $("#updateBlock").hide();
     performAJAX("/employee", "PUT", ko.toJSON(this), function(data) {
       $.jGrowl(data);
-      loadData("/employee?page=" + PAGE_NUM + "&size=" + PAGE_SIZE);
+      loadData();
     });
   }
 
@@ -111,10 +119,19 @@ function performAJAX(url, method, data, handleResponse) {
 	});
 }
 
-function loadData(url) {
+function loadData() {
+  url = "/employee?page=" + PAGE_NUM + "&size=" + PAGE_SIZE;
+  if(VIEW_MODE == "SEARCH") {
+    url = "/employee/search?page=" + PAGE_NUM + "&size=" + PAGE_SIZE + "&name=" + $("#searchInput").val();
+  }
   performAJAX(url, "GET", "", function(data) {
     data = JSON.parse(data);
     PAGE_MAX = data.pages - 1;
+    if(PAGE_NUM == PAGE_MAX) {
+      $("#nextPage").hide();
+    } else {
+      $("#nextPage").show();
+    }
     data = data.content;
     var preparedData = [];
     for(var i = 0; i < data.length; i++) {
@@ -126,7 +143,7 @@ function loadData(url) {
   });
 }
 
-loadData("/employee?page=" + PAGE_NUM + "&size=" + PAGE_SIZE);
+loadData();
 ko.applyBindings(employeesModel, $("#employeesModel")[0]);
 
 
