@@ -1,0 +1,32 @@
+{
+    "pages": 2,
+    "content": [
+        {
+            "id": 1,
+            "name": "dev_1",
+            "active": true,
+            "department": {
+                "id": 1,
+                "name": "someDepartment"
+            }
+        },
+        {
+            "id": 2,
+            "name": "admin",
+            "active": false,
+            "department": {
+                "id": 1,
+                "name": "someDepartment"
+            }
+        },
+        {
+            "id": 3,
+            "name": "manager",
+            "active": true,
+            "department": {
+                "id": 1,
+                "name": "someDepartment"
+            }
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "pages": 1,
+    "content": [
+        {
+            "id": 1,
+            "name": "dev_1",
+            "active": true,
+            "department": {
+                "id": 1,
+                "name": "someDepartment"
+            }
+        },
+        {
+            "id": 4,
+            "name": "dev_2",
+            "active": true,
+            "department": {
+                "id": 1,
+                "name": "someDepartment"
+            }
+        }
+    ]
+}
