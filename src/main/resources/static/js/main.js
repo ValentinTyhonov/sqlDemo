@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 
-var PAGE_SIZE = 3;
+var PAGE_SIZE = 10;
 var PAGE_NUM = 0;
 var PAGE_MAX;
 var VIEW_MODE = "ALL";
