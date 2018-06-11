@@ -11,3 +11,7 @@ spring.datasource.url:
 spring.datasource.username:
 spring.datasource.password:
 ```
+Service can be run via terminal/command line with next command:
+```
+java –jar sqlDemo.jar –-spring.config.location=local.properties
+```
