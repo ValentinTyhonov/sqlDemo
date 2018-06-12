@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public interface WebController {
+public class WebController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    String index(Model model);
+    public String index(Model model) {
+        return "index";
+    }
 
 }
