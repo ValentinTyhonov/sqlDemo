@@ -1,9 +1,0 @@
-{
-    "id": 2,
-    "name": "administrator",
-    "active": true,
-    "department": {
-        "id": 1,
-        "name": "someDepartment"
-    }
-}

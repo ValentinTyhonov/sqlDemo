@@ -7,19 +7,18 @@ import com.project.sqlDemo.repository.EmployeeRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,68 +33,72 @@ public class EmployeeServiceTest {
     @MockBean
     private EmployeeRepository repository;
 
-    @Mock
-    private Pageable pageable;
-
     private Employee employee;
 
     @Before
     public void before() {
         employee = new Employee(1L, "Thomas", true, new Department());
-
-        when(pageable.getPageNumber()).thenReturn(0);
-        when(pageable.getPageSize()).thenReturn(10);
     }
 
     @Test
-    public void testSave() {
-        service.save(employee);
-        verify(repository, times(1)).save(employee);
+    public void testGetAll() {
+        when(repository.findAll()).thenReturn(Collections.singletonList(employee));
+        List<Employee> foundEmployees = service.getAll();
+        verify(repository, times(1)).findAll();
+        assertEquals(1, foundEmployees.size());
+        assertEquals(true, foundEmployees.contains(employee));
     }
 
     @Test
     public void testGetPage() {
-        when(repository.findAll(pageable)).thenReturn(new PageImpl<>(Collections.singletonList(employee)));
-        Page foundPage = service.getPage(pageable);
-        verify(repository, times(1)).findAll(pageable);
-        assertEquals(foundPage, new PageImpl<>(Collections.singletonList(employee)));
-        assertEquals(foundPage.getTotalElements(), 1);
-        assertEquals(foundPage.getContent().contains(employee), true);
+        when(repository.findAll(anyInt(), anyInt())).thenReturn(new ArrayList<>(Collections.singletonList(employee)));
+        List<Employee> foundEmployees = service.getPage(1, 3);
+        verify(repository, times(1)).findAll(0, 3);
+        assertEquals(foundEmployees, new ArrayList<>(Collections.singletonList(employee)));
+        assertEquals(1, foundEmployees.size());
+        assertEquals(true, foundEmployees.contains(employee));
     }
 
     @Test
     public void testGetByID() {
-        Long id = 1L;
-        when(repository.findById(id)).thenReturn(Optional.of(employee));
+        long id = 1L;
+        when(repository.findById(id)).thenReturn(employee);
         Employee foundEmployee = service.getByID(id);
         verify(repository, times(1)).findById(id);
-        assertEquals(foundEmployee, employee);
-    }
-
-    @Test
-    public void testGetByIDNotFound() {
-        Long id = 1L;
-        when(repository.findById(id)).thenReturn(Optional.empty());
-        Employee foundEmployee = service.getByID(id);
-        verify(repository, times(1)).findById(id);
-        assertEquals(foundEmployee, null);
-    }
-
-    @Test
-    public void testRemove() {
-        service.remove(employee);
-        verify(repository, times(1)).delete(employee);
+        assertEquals(employee, foundEmployee);
     }
 
     @Test
     public void testSearch() {
         String conditionForSearching = "Th";
-        when(repository.findByNameStartingWith(pageable, conditionForSearching)).thenReturn(new PageImpl<>(Collections.singletonList(employee)));
-        Page foundPage = service.search(pageable, conditionForSearching);
-        verify(repository, times(1)).findByNameStartingWith(pageable, conditionForSearching);
-        assertEquals(foundPage, new PageImpl<>(Collections.singletonList(employee)));
-        assertEquals(foundPage.getTotalElements(), 1);
-        assertEquals(foundPage.getContent().contains(employee), true);
+        when(repository.findByName(anyInt(), anyInt(), anyString())).thenReturn(new ArrayList<>(Collections.singletonList(employee)));
+        List<Employee> foundEmployees = service.search(1, 3, conditionForSearching);
+        verify(repository, times(1)).findByName(0, 3, conditionForSearching);
+        assertEquals(foundEmployees, new ArrayList<>(Collections.singletonList(employee)));
+        assertEquals(1, foundEmployees.size());
+        assertEquals(true, foundEmployees.contains(employee));
+    }
+
+    @Test
+    public void testCreate() {
+        when(repository.update(employee)).thenReturn(true);
+        assertEquals(true, service.update(employee));
+        verify(repository, times(1)).update(employee);
+    }
+
+    @Test
+    public void testUpdate() {
+        when(repository.create(employee)).thenReturn(true);
+        assertEquals(true, service.create(employee));
+        verify(repository, times(1)).create(employee);
+    }
+
+    @Test
+    public void testRemove() {
+        long id = 1L;
+        when(repository.delete(id)).thenReturn(true);
+        assertEquals(true, service.remove(id));
+        verify(repository, times(1)).delete(id);
     }
 
 }

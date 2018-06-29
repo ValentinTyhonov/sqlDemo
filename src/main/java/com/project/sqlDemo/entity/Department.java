@@ -1,33 +1,29 @@
 package com.project.sqlDemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
  * Used as entity for tbldepartments table
  *
  */
-@Entity
-@Table(name = "tbldepartments")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @ToString
 public class Department {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "dpID")
+    @NonNull
     private Long id;
 
-    @Column(name = "dpName")
+    @NonNull
     private String name;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     @ToString.Exclude
+    @JsonIgnore
     private List<Employee> employees;
 
 }

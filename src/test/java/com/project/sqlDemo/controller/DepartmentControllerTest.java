@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.mockito.Mockito.when;
@@ -31,7 +30,7 @@ public class DepartmentControllerTest {
 
     @Test
     public void testGetAllDepartments() throws Exception {
-        Department department = new Department(1L, "Glue", new ArrayList<>());
+        Department department = new Department(1L, "Glue");
         when(service.getAll()).thenReturn(Collections.singletonList(department));
         String expectedContent = "[{\"id\":1,\"name\":\"Glue\"}]";
 

@@ -9,7 +9,7 @@ public interface DepartmentService {
     /**
      * This method is used for getting all departments from db
      *
-     * @return list with all departments
+     * @return list with all department records
      */
     List<Department> getAll();
 

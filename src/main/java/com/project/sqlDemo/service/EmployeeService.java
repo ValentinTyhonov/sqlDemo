@@ -1,28 +1,27 @@
 package com.project.sqlDemo.service;
 
 import com.project.sqlDemo.entity.Employee;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface EmployeeService {
 
     /**
-     * This method is used for storing new record
-     * or updating existed one in db
+     * This method is used for getting all employees from db
      *
-     * @param employee - new or updated record
+     * @return list with all employees records
      */
-    void save(Employee employee);
+    List<Employee> getAll();
 
     /**
      * This method is used for getting page with
      * some number of records from db
      *
-     * @param pageable - object with information about
-     *                 requested page number and page size
+     * @param page - current page number
+     * @param size - page size
      * @return page with requested number of records
      */
-    Page<Employee> getPage(Pageable pageable);
+    List<Employee> getPage(int page, int size);
 
     /**
      * This method is used for fetching record by id from db
@@ -33,21 +32,35 @@ public interface EmployeeService {
     Employee getByID(Long id);
 
     /**
-     * Tis method is used for removing record from db
-     *
-     * @param employee - record, that should be removed
-     */
-    void remove(Employee employee);
-
-    /**
      * This method is used for fetching records from db,
      * which name starts with <name>
      *
-     * @param pageable - object with information about
-     *                 requested page number and page size
+     * @param page - current page number
+     * @param size - page size
      * @param name - string that record name should start with
      * @return page with requested number of records
      */
-    Page<Employee> search(Pageable pageable, String name);
+    List<Employee> search(int page, int size, String name);
+
+    /**
+     * This method is used for storing new record in db
+     *
+     * @param employee - new employee record
+     */
+    boolean create(Employee employee);
+
+    /**
+     * This method is used for updating existed record in db
+     *
+     * @param employee - updated employee record
+     */
+    boolean update(Employee employee);
+
+    /**
+     * Tis method is used for removing record from db
+     *
+     * @param id - record id, that should be removed
+     */
+    boolean remove(Long id);
 
 }

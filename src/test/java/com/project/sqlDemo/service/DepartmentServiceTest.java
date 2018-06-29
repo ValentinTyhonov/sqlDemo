@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,12 +30,12 @@ public class DepartmentServiceTest {
 
     @Test
     public void testGetAll() {
-        Department department = new Department(1L, "Glue", new ArrayList<>());
+        Department department = new Department(1L, "Glue");
         when(repository.findAll()).thenReturn(Collections.singletonList(department));
         List<Department> foundDepartments = service.getAll();
         verify(repository, times(1)).findAll();
-        assertEquals(foundDepartments.size(), 1);
-        assertEquals(foundDepartments.contains(department), true);
+        assertEquals(1, foundDepartments.size());
+        assertEquals(true, foundDepartments.contains(department));
     }
 
 }

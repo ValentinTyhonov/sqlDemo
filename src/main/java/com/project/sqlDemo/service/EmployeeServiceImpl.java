@@ -3,11 +3,9 @@ package com.project.sqlDemo.service;
 import com.project.sqlDemo.entity.Employee;
 import com.project.sqlDemo.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -16,32 +14,38 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public void save(Employee employee) {
-        employeeRepository.save(employee);
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
     }
 
     @Override
-    public Page<Employee> getPage(Pageable pageable) {
-        return employeeRepository.findAll(pageable);
+    public List<Employee> getPage(int page, int size) {
+        return employeeRepository.findAll((page-1)*size, size);
     }
 
     @Override
     public Employee getByID(Long id) {
-        Optional<Employee> employee = employeeRepository.findById(id);
-        if (employee.isPresent()) {
-            return employee.get();
-        } else {
-            return null;
-        }
+        return employeeRepository.findById(id);
     }
 
     @Override
-    public void remove(Employee employee) {
-        employeeRepository.delete(employee);
+    public List<Employee> search(int page, int size, String name) {
+        return employeeRepository.findByName((page-1)*size, size, name);
     }
 
     @Override
-    public Page<Employee> search(Pageable pageable, String name) {
-        return employeeRepository.findByNameStartingWith(pageable, name);
+    public boolean create(Employee employee) {
+        return employeeRepository.create(employee);
     }
+
+    @Override
+    public boolean update(Employee employee) {
+        return employeeRepository.update(employee);
+    }
+
+    @Override
+    public boolean remove(Long id) {
+        return employeeRepository.delete(id);
+    }
+
 }

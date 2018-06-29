@@ -1,14 +1,15 @@
 package com.project.sqlDemo.repository;
 
 import com.project.sqlDemo.entity.Department;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Provides CRUD operations for Department entity
  *
  */
-@Repository
-public interface DepartmentRepository extends JpaRepository<Department, Long> {
+public interface DepartmentRepository {
+
+    List<Department> findAll();
 
 }

@@ -1,26 +1,27 @@
 package com.project.sqlDemo.repository;
 
 import com.project.sqlDemo.entity.Employee;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Provides CRUD operations for Employee entity
  *
  */
-@Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository {
 
-    /**
-     * This method is used for getting each record from db, where name starts with <name>
-     *
-     * @param pageable - object with information about
-     *                 requested page number and page size
-     * @param name - parameter for searching by
-     * @return page with employees
-     */
-    Page<Employee> findByNameStartingWith(Pageable pageable, String name);
+    List<Employee> findAll();
+
+    List<Employee> findAll(int skip, int limit);
+
+    Employee findById(Long id);
+
+    List<Employee> findByName(int skip, int limit, String name);
+
+    boolean create(Employee employee);
+
+    boolean update(Employee employee);
+
+    boolean delete(Long id);
 
 }
